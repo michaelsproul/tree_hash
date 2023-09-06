@@ -1,5 +1,5 @@
 use crate::{get_zero_hash, Hash256, HASHSIZE};
-use ethereum_hashing::{Context, Sha256Context, HASH_LEN};
+use ethereum_hashing::{Context, HASH_LEN};
 use smallvec::{smallvec, SmallVec};
 use std::mem;
 
@@ -124,7 +124,7 @@ pub struct MerkleHasher {
     /// Stores the nodes that are half-complete and awaiting a right node.
     ///
     /// A smallvec of size 8 means we can hash a tree with 256 leaves without allocating on the
-    /// heap. Each half-node is 232 bytes, so this smallvec may store 1856 bytes on the stack.
+    /// heap. Each half-node is 16 bytes, so this smallvec may store 128 bytes on the stack.
     half_nodes: SmallVec8<HalfNode>,
     /// The depth of the tree that will be produced.
     ///
@@ -368,7 +368,7 @@ mod test {
     fn context_size() {
         assert_eq!(
             mem::size_of::<HalfNode>(),
-            224,
+            16,
             "Halfnode size should be as expected"
         );
     }
